@@ -1,0 +1,14 @@
+#!/bin/bash
+
+rm ./uHTR_latency_log_HF.txt
+touch ./uHTR_latency_log_HF.txt
+for i in 22 29 32
+do
+  for j in {1..12}
+  do
+    echo "Checking uHTR $i:$j"
+    echo "uHTR $i:$j" >> uHTR_latency_log_HF.txt
+    echo "link stat q q " | uHTRtool.exe -c $i:$j | grep "FIFO occ" >> uHTR_latency_log_HF.txt
+    echo "link stat q q " | uHTRtool.exe -c $i:$j | ( grep "Suggested" || echo "Suggested setting for read delay: NOT FOUND" ) >> uHTR_latency_log_HF.txt
+  done
+done
