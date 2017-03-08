@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo "Reloading FW on uHTR $1:$2..."
+echo "mmc reload q q" | uHTRtool.exe -c $1:$2
+echo "done."
+
+echo "Verifying FW on uHTR $1:$2..."
+echo "status q" | uHTRtool.exe -c $1:$2 | awk 'NR==4 || NR==5 || NR==6'

@@ -1,0 +1,25 @@
+#!/bin/bash
+
+rm ./uHTR_iFPGA_link_log_HF.txt
+touch ./uHTR_iFPGA_link_log_HF.txt
+
+echo "Reseting lumi interFPGA links..."
+for i in 22 29 32
+do
+  for j in {1..12}
+  do
+    echo "uHTR $i:$j -- reseting lumi interFPGA link"
+    echo "lumi reset q q" | uHTRtool.exe -c $i:$j > /dev/null
+  done
+done
+
+echo "Checking lumi interFPGA link statuses..."
+for i in 22 29 32
+do
+  for j in {1..12}
+  do
+    echo "Checking uHTR $i:$j link:"
+    echo "uHTR $i:$j" >> uHTR_iFPGA_link_log_HF.txt
+    echo "lumi q q" | uHTRtool.exe -c $i:$j | awk 'NR== 38' | tee -a uHTR_iFPGA_link_log_HF.txt
+  done
+done

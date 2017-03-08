@@ -1,0 +1,25 @@
+#!/bin/bash
+
+rm ./uHTR_clock_setup_log_HF.txt
+touch ./uHTR_clock_setup_log_HF.txt
+
+echo "Configuring clocks..."
+for i in 22 29 32
+do
+  for j in {1..12}
+  do
+    echo "Configuring uHTR $i:$j clock: Standard Async 5.0 Gbps setup"
+    echo "clock setup 3 q q" | uHTRtool.exe -c $i:$j > /dev/null
+  done
+done
+
+echo "Checking and logging runs..."
+for i in 22 29 32
+do
+  for j in {1..12}
+  do
+    echo "Checking uHTR $i:$j clock:"
+    echo "uHTR $i:$j" >> uHTR_clock_setup_log_HF.txt
+    echo "status q" | uHTRtool.exe -c $i:$j | awk 'NR== 18 || NR==19' | tee -a uHTR_clock_setup_log_HF.txt
+  done
+done

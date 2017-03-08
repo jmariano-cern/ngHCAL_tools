@@ -1,0 +1,23 @@
+#!/bin/bash
+
+rm ./uHTR_FW_log_HF.txt
+touch ./uHTR_FW_log_HF.txt
+
+echo "Reloading FW..."
+for i in 22 29 32
+do
+  echo "Reloading uHTR FW in uTCA crate $i..."
+  echo "flash reload q q" | uHTRtool.exe -p -c $i:1-12
+  echo "done."
+done
+
+echo "Verifying FW..."
+for i in 22 29 32
+do
+  for j in {1..12}
+  do
+    echo "Checking uHTR $i:$j FW:"
+    echo "uHTR $i:$j" >> uHTR_FW_log_HF.txt
+    echo "status q" | uHTRtool.exe -c $i:$j | awk 'NR== 4 || NR==5 || NR ==6' | tee -a uHTR_FW_log_HF.txt
+  done
+done
