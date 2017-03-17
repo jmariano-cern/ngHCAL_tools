@@ -1,0 +1,15 @@
+#!/bin/bash
+
+END=$((SECONDS+$5))
+LOGFILE=./uHTR_spy.log
+
+rm $LOGFILE
+
+echo "Monitoring uHTR ${1}:${2} fiber ${3} for ADCs > ${4} for ${5} seconds..."
+
+while [ $SECONDS -lt $END ];
+  do
+ ./uHTR_spy $1 $2 $3 $4 $LOGFILE
+done
+
+echo "...monitoring finshed. Log written to ${LOGFILE}."
